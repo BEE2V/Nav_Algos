@@ -5,24 +5,24 @@ r1.remove_edge((0,0),(0,1))
 # print(r1.graph)
 
 running = True
-while running:
+while running:                              # Main loop
     for event in pg.event.get():
-        if event.type == pg.QUIT :
+        if event.type == pg.QUIT :          # Quitting
             running = False 
  
-        elif event.type == pg.KEYDOWN:
+        elif event.type == pg.KEYDOWN:      # Quitting
             if event.key == pg.K_ESCAPE:
                 running = False
             
-            if event.key == pg.K_SPACE:
+            if event.key == pg.K_SPACE:     # Exploring
                 r1.explore()
             
-            if event.key == pg.K_g:
+            if event.key == pg.K_g:         # Showing graph   
                 print(r1.graph  )
 
-    draw_lab(window)
-    r1.draw(window)
-    r1.show_dist(window)
+    draw_lab(window)                        # Drawing labrynth
+    r1.draw(window)                         # Drawing Robot
+    r1.show_dist(window)                    # Displaying distances
 
 
     pg.display.flip()

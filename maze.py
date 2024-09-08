@@ -12,9 +12,10 @@ pg.display.set_caption('Basic Pygame Loop')
 
 clock = pg.time.Clock()
 
+# Labrynth designs
 # wall 🟦, no wall ❎, start 🟨, end 🟥
-"""
 
+"""
 lab = ["🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦",
        "🟦❎❎❎❎❎❎❎❎❎❎❎🟦",
        "🟦❎🟦🟦🟦🟦🟦❎🟦🟦🟦🟦🟦",
@@ -34,7 +35,12 @@ lab = ["🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦",
        "🟦❎🟦❎🟦❎🟦❎🟦🟦🟦❎🟦",
        "🟦🟨🟦❎❎❎❎❎❎❎❎❎🟦",
        "🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦"]
-def draw_lab(window, cell_col='#d6edcc', wall_col='#024461', bg_col='#bce5f7'):
+
+def draw_lab(window, cell_col='#d6edcc', wall_col='#024461', bg_col='#bce5f7'): # Draw the labrynth
+    """
+    This method draws a labrynth with the provided design
+    """
+
     window.fill(bg_col)
 
     for j in range(2*H_CELLS + 1):
@@ -68,7 +74,10 @@ def draw_lab(window, cell_col='#d6edcc', wall_col='#024461', bg_col='#bce5f7'):
                 y = (j//2)*(C_W + GAP)
                 pg.draw.rect(window, wall_col, (x, y, GAP, GAP)) # pillars
 
-def draw_text(window, text, grid_coords: tuple):
+def draw_text(window, text, grid_coords: tuple): # Draw text
+    """
+    Draws text inside a given grid coordinates
+    """
     font = pg.font.SysFont(None, 24)
     text_surface = font.render(str(text), True, "#000000")
     text_rect = text_surface.get_rect()
@@ -76,14 +85,18 @@ def draw_text(window, text, grid_coords: tuple):
     y = grid_coords[1] * (C_W + GAP) + GAP + (C_W - text_rect.height) // 2
     window.blit(text_surface, (x, y))           
 
-def evaluate():
-
+def evaluate()->tuple[dict[int, int], tuple[int, int], tuple[int, int]]:
+    """
+    Find start cell, end cell and Manhattan distance to end cell from each cell
+    """
+    # Search for the staring and ending grid coordinates
     for j in range(2*H_CELLS + 1):
         for i in range(2*W_CELLS + 1):
 
             if lab[j][i] == "🟨": start = (i//2,j//2)
             if lab[j][i] == "🟥": end = (i//2,j//2)
 
+    # Calculate Manhattan distance from all the cells to the end cell
     dist = {}
     for j in range(H_CELLS):
         for i in range(W_CELLS):

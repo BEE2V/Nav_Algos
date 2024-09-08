@@ -3,16 +3,17 @@ from maze import *
 class robot:
     def __init__(self) -> None:
         self.explored = [["⬛" for i in range(W_CELLS)] for j in range(H_CELLS)]
-        self.estm_dist, self.pos , self.target = evaluate()
+        self.estm_dist, self.pos , self.target = evaluate() # Identify these by scanning the labrynth
         self.came_from, self.going_to = [None]*2
-        self.journey = {}
+        self.journey = {} # Jouney taken by the robot
 
         self.graph = {}
-        self.generate_graph()
+        self.generate_graph() # Graph of neighbours
 
         # self.pos = (5, 2)
 
     def get_neighbours(self, cell_cords, lab_cords):
+        
         i, j = cell_cords
         x, y = lab_cords
 
