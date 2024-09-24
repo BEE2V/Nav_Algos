@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+from typing import Dict, List, Tuple
 
 pg.init()
 
@@ -36,7 +37,7 @@ lab = ["🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦",
        "🟦🟨🟦❎❎❎❎❎❎❎❎❎🟦",
        "🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦"]
 
-def draw_lab(window, cell_col='#d6edcc', wall_col='#024461', bg_col='#bce5f7'): # Draw the labrynth
+def draw_lab(window, cell_col='#d6edcc', wall_col='#919fb8', bg_col='#bce5f7'): # Draw the labrynth
     """
     This method draws a labrynth with the provided design
     """

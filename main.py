@@ -22,6 +22,7 @@ while running:                              # Main loop
 
     draw_lab(window)                        # Drawing labrynth
     r1.draw(window)                         # Drawing Robot
+    # r1.draw_seen_walls(window)              # Drawing the walls seen by the robot
     r1.show_dist(window)                    # Displaying distances
 
 
