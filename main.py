@@ -13,7 +13,10 @@ while running:                              # Main loop
                 running = False
             
             if event.key == pg.K_SPACE:     # Exploring
-                r1.explore()
+                if r1.exploring:
+                    r1.explore()
+                else:
+                    r1.go_optimaly()
             
             if event.key == pg.K_g:         # Showing graph   
                 print(r1.graph  )

@@ -3,7 +3,8 @@ from labrynth import *
 class robot:
     def __init__(self) -> None:
         self.explored = [["⬛" for i in range(W_CELLS)] for j in range(H_CELLS)] # ⬛- not explored, ⬜- explored
-        self.estm_dist, self.pos , self.target = evaluate() # Identify these by scanning the labrynth
+        self.estm_dist, self.start , self.target = evaluate() # Identify these by scanning the labrynth
+        self.pos = self.start
         self.came_from, self.going_to = [None]*2
         self.journey = {} # Jouney taken by the robot
 
@@ -16,6 +17,7 @@ class robot:
             for i, row in enumerate(lab)
         ]
 
+        self.exploring = True # True - Exploring, False - Returning
 
 
         # self.pos = (5, 2)
@@ -49,7 +51,12 @@ class robot:
 
     def explore(self):
         '''
-        
+        explore through the labrynth while doing the following
+        \n1. check for walls between current cell and neighbour cells
+        \n2. if there's a wall, remove the connections(edges) between those cells
+        \n3. select a cell to travel in the next step
+        \n4. update the distances to each cell from the target cell
+        \n5. update the self.journey
         '''
 
         self.came_from = self.pos
@@ -82,6 +89,24 @@ class robot:
 
             selected[-1] = invert[selected[-1]]
 
+        # If robot has come to the target, calculate the optimal path from staring square
+        if self.pos == self.target:
+            
+            self.optimal_path:list[tuple[int,int]] = [self.start]
+            dist, cords = 100000, self.start
+
+            while cords != self.target:
+                cells = self.graph[cords]
+
+                for cell_cords in cells:
+                    if self.estm_dist[cell_cords] < dist:
+                        dist = self.estm_dist[cell_cords]
+                        cords = cell_cords
+                self.optimal_path.append(cords)  
+
+            self.exploring = False      
+
+
         self.journey[self.pos] = selected # Update the self.journey with the selected cell
         self.update_vals(self.target, self.graph) # Update the distance values to the target cell from all other cells according to newly found walls
 
@@ -96,6 +121,18 @@ class robot:
         self.explored[j][i] = "⬜" # mark self.pos as visited
 
         # print(f"came={self.came_from} pos={self.pos}\t dir={dir}\t going={self.going_to}")
+
+    def go_optimaly(self,from_start = False):
+        '''
+        robot travels in the optimal path from start or from target as defined
+        '''
+        if self.optimal_path:
+            i = 0 if from_start else -1
+            self.pos = self.optimal_path.pop(i)
+        else:
+            print('Reached the target through optimal path')
+
+        
 
     def draw(self, window, col="#1df24f"):
         '''
