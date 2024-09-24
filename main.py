@@ -1,8 +1,6 @@
 from robot import *
 
 r1 = robot()
-r1.remove_edge((0,0),(0,1))
-# print(r1.graph)
 
 running = True
 while running:                              # Main loop
@@ -22,7 +20,7 @@ while running:                              # Main loop
 
     draw_lab(window)                        # Drawing labrynth
     r1.draw(window)                         # Drawing Robot
-    # r1.draw_seen_walls(window)              # Drawing the walls seen by the robot
+    r1.draw_seen_labrynth(window)           # Drawing the walls seen by the robot
     r1.show_dist(window)                    # Displaying distances
 
 

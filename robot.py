@@ -8,8 +8,15 @@ class robot:
         self.journey = {} # Jouney taken by the robot
 
         self.graph: Dict[Tuple[int, int], List[Tuple[int, int]]] = {}   # To store all edges between cells
-        self.generate_graph() # Graph of neighbours
-        # self.seen_walls: Dict[Tuple[int, int], List[Tuple[int, int]]] = {} # To store all removed edges between cells (Walls)
+        self.generate_graphs() # Graph of neighbours
+        # Store all removed edges between cells (Walls)
+        self.seen_labrynth = [
+            [cell if (i == 0 or i == len(lab) - 1 or j == 0 or j == len(row) - 1) else "🟩"
+            for j, cell in enumerate(row)]
+            for i, row in enumerate(lab)
+        ]
+
+
 
         # self.pos = (5, 2)
 
@@ -99,7 +106,33 @@ class robot:
         y = j*(C_W + GAP) + GAP
         pg.draw.rect(window, col, (x, y, C_W, C_W))
         
-    def generate_graph(self):
+    def draw_seen_labrynth(self, window, wall_col='#024461'):
+        '''
+        draw the walls seen and stored in robot's memory
+        '''
+
+        for j in range(2*H_CELLS + 1):
+            for i in range(2*W_CELLS + 1):                    
+                
+                if i % 2 and j % 2 == 0:
+                    if self.seen_labrynth[j][i] == "🟦":
+                        x = (i//2)*(GAP + C_W) + GAP
+                        y = (j//2)*(GAP + C_W)
+                        pg.draw.rect(window, wall_col, (x, y, C_W, GAP)) # horizontal walls                
+
+                elif i % 2 == 0 and j % 2:
+                    if self.seen_labrynth[j][i] == "🟦":
+                        x = (i//2)*(GAP + C_W)
+                        y = (j//2)*(GAP + C_W) + GAP
+                        pg.draw.rect(window, wall_col, (x, y, GAP, C_W)) # vertical walls
+
+                elif not(i % 2 and j % 2):
+                    if self.seen_labrynth[j][i] == "🟦":
+                        x = (i//2)*(C_W + GAP)
+                        y = (j//2)*(C_W + GAP)
+                        pg.draw.rect(window, wall_col, (x, y, GAP, GAP)) # pillars       
+    
+    def generate_graphs(self):
         '''
         Generate a dictionary, where all the neighbours for a given cell is stored. 
         \n(record same connection twice {a:'b',  b:'a'})
@@ -125,12 +158,33 @@ class robot:
         '''
 
         if cord_2 in self.graph[cord_1]:
-            self.graph[cord_1].remove(cord_2)  
-            # self.seen_walls[cord_1] = cord_2
+            self.graph[cord_1].remove(cord_2) 
 
         if cord_1 in self.graph[cord_2]:
             self.graph[cord_2].remove(cord_1)  
-            # self.seen_walls[cord_2] = cord_1
+        
+        self.update_seen_lab(cord_1, cord_2)
+
+    def update_seen_lab(self, cord_1, cord_2):
+        '''
+        when removing an edge(robot has seen a wall),
+        \nthis method will mark a wall in robots memory
+        '''
+
+        n1, m1 = cord_1
+        n2, m2 = cord_2
+
+        x = 2*n1 + 1 + (n2 - n1) 
+        y = 2*m1 + 1 + (m2 - m1)
+
+        if m1 == m2:
+            self.seen_labrynth[y-1][x] = '🟦'
+            self.seen_labrynth[y  ][x] = '🟦'
+            self.seen_labrynth[y+1][x] = '🟦'
+        if n1 == n2:
+            self.seen_labrynth[y][x-1] = '🟦'
+            self.seen_labrynth[y][x  ] = '🟦'
+            self.seen_labrynth[y][x+1] = '🟦'
 
     def update_vals(self, pos, graph):
         '''
