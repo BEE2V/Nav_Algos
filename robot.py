@@ -1,9 +1,9 @@
-from labrynth import *
+from labyrinth import *
 
 class robot:
     def __init__(self) -> None:
         self.explored = [["⬛" for i in range(W_CELLS)] for j in range(H_CELLS)] # ⬛- not explored, ⬜- explored
-        self.estm_dist, self.start , self.target = evaluate() # Identify these by scanning the labrynth
+        self.estm_dist, self.start , self.target = evaluate() # Identify these by scanning the labyrinth
         self.pos = self.start
         self.came_from, self.going_to = [None]*2
         self.journey = {} # Jouney taken by the robot
@@ -11,7 +11,7 @@ class robot:
         self.graph: Dict[Tuple[int, int], List[Tuple[int, int]]] = {}   # To store all edges between cells
         self.generate_graphs() # Graph of neighbours
         # Store all removed edges between cells (Walls)
-        self.seen_labrynth = [
+        self.seen_labyrinth = [
             [cell if (i == 0 or i == len(lab) - 1 or j == 0 or j == len(row) - 1) else "🟩"
             for j, cell in enumerate(row)]
             for i, row in enumerate(lab)
@@ -51,7 +51,7 @@ class robot:
 
     def explore(self):
         '''
-        explore through the labrynth while doing the following
+        explore through the labyrinth while doing the following
         \n1. check for walls between current cell and neighbour cells
         \n2. if there's a wall, remove the connections(edges) between those cells
         \n3. select a cell to travel in the next step
@@ -136,14 +136,14 @@ class robot:
 
     def draw(self, window, col="#1df24f"):
         '''
-        draw the robot in its position on the labrynth
+        draw the robot in its position on the labyrinth
         '''
         i, j = self.pos
         x = i*(C_W + GAP) + GAP
         y = j*(C_W + GAP) + GAP
         pg.draw.rect(window, col, (x, y, C_W, C_W))
         
-    def draw_seen_labrynth(self, window, wall_col='#024461'):
+    def draw_seen_labyrinth(self, window, wall_col='#024461'):
         '''
         draw the walls seen and stored in robot's memory
         '''
@@ -152,19 +152,19 @@ class robot:
             for i in range(2*W_CELLS + 1):                    
                 
                 if i % 2 and j % 2 == 0:
-                    if self.seen_labrynth[j][i] == "🟦":
+                    if self.seen_labyrinth[j][i] == "🟦":
                         x = (i//2)*(GAP + C_W) + GAP
                         y = (j//2)*(GAP + C_W)
                         pg.draw.rect(window, wall_col, (x, y, C_W, GAP)) # horizontal walls                
 
                 elif i % 2 == 0 and j % 2:
-                    if self.seen_labrynth[j][i] == "🟦":
+                    if self.seen_labyrinth[j][i] == "🟦":
                         x = (i//2)*(GAP + C_W)
                         y = (j//2)*(GAP + C_W) + GAP
                         pg.draw.rect(window, wall_col, (x, y, GAP, C_W)) # vertical walls
 
                 elif not(i % 2 and j % 2):
-                    if self.seen_labrynth[j][i] == "🟦":
+                    if self.seen_labyrinth[j][i] == "🟦":
                         x = (i//2)*(C_W + GAP)
                         y = (j//2)*(C_W + GAP)
                         pg.draw.rect(window, wall_col, (x, y, GAP, GAP)) # pillars       
@@ -215,13 +215,13 @@ class robot:
         y = 2*m1 + 1 + (m2 - m1)
 
         if m1 == m2:
-            self.seen_labrynth[y-1][x] = '🟦'
-            self.seen_labrynth[y  ][x] = '🟦'
-            self.seen_labrynth[y+1][x] = '🟦'
+            self.seen_labyrinth[y-1][x] = '🟦'
+            self.seen_labyrinth[y  ][x] = '🟦'
+            self.seen_labyrinth[y+1][x] = '🟦'
         if n1 == n2:
-            self.seen_labrynth[y][x-1] = '🟦'
-            self.seen_labrynth[y][x  ] = '🟦'
-            self.seen_labrynth[y][x+1] = '🟦'
+            self.seen_labyrinth[y][x-1] = '🟦'
+            self.seen_labyrinth[y][x  ] = '🟦'
+            self.seen_labyrinth[y][x+1] = '🟦'
 
     def update_vals(self, pos, graph):
         '''
@@ -247,7 +247,7 @@ class robot:
 
     def show_dist(self, window):
         '''
-        display the calculated distances on the cells of the labrynth
+        display the calculated distances on the cells of the labyrinth
         '''
         for cell in self.estm_dist:
             draw_text(window, self.estm_dist[cell], cell)

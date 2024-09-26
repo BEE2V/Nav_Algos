@@ -21,9 +21,9 @@ while running:                              # Main loop
             if event.key == pg.K_g:         # Showing graph   
                 print(r1.graph  )
 
-    draw_lab(window)                        # Drawing labrynth
+    draw_lab(window)                        # Drawing labyrinth
     r1.draw(window)                         # Drawing Robot
-    r1.draw_seen_labrynth(window)           # Drawing the walls seen by the robot
+    r1.draw_seen_labyrinth(window)           # Drawing the walls seen by the robot
     r1.show_dist(window)                    # Displaying distances
 
 

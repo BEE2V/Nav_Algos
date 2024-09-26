@@ -13,7 +13,7 @@ pg.display.set_caption('Basic Pygame Loop')
 
 clock = pg.time.Clock()
 
-# Labrynth designs
+# labyrinth designs
 # wall 🟦, no wall ❎, start 🟨, end 🟥
 
 """
@@ -37,9 +37,9 @@ lab = ["🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦",
        "🟦🟨🟦❎❎❎❎❎❎❎❎❎🟦",
        "🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦"]
 
-def draw_lab(window, cell_col='#d6edcc', wall_col='#919fb8', bg_col='#bce5f7'): # Draw the labrynth
+def draw_lab(window, cell_col='#d6edcc', wall_col='#919fb8', bg_col='#bce5f7'): # Draw the labyrinth
     """
-    This method draws a labrynth with the provided design
+    This method draws a labyrinth with the provided design
     """
 
     window.fill(bg_col)
